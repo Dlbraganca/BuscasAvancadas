@@ -27,7 +27,7 @@ private:
 
 	inline Puzzle Mutate(Puzzle x);
 
-	inline std::vector<Puzzle> CreatePopulation(Puzzle problem, int deepth, int populationSize);
+	inline std::vector<Puzzle> CreatePopulation(int deepth, int populationSize);
 
 	inline Puzzle Main(Puzzle problem);
 

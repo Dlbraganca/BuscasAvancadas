@@ -1,4 +1,4 @@
-#include".\header\puzzle.h"
+#include"./header/puzzle.h"
 
 	Puzzle::Puzzle() {};
 

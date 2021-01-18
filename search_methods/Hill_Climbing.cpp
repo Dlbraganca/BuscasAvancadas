@@ -1,4 +1,4 @@
-#include".\header\Hill_Climbing.h"
+#include"./header/Hill_Climbing.h"
 
 
 	HillClimbing::HillClimbing(Puzzle Problem) {

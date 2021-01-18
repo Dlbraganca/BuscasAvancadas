@@ -1,7 +1,7 @@
-#include"..\search_methods\Hill_Climbing.cpp"
-#include"..\search_methods\Simulated_Annealing.cpp"
-#include"..\search_methods\Local_Beam.cpp"
-#include"..\search_methods\Genetic_Algorithm.cpp"
+#include"../search_methods/Hill_Climbing.cpp"
+#include"../search_methods/Simulated_Annealing.cpp"
+#include"../search_methods/Local_Beam.cpp"
+#include"../search_methods/Genetic_Algorithm.cpp"
 
 void PrintVector(std::vector<int> x) {
     for (int i = 0; i < x.size(); i++)

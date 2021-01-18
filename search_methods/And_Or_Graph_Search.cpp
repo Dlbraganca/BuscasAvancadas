@@ -1,4 +1,4 @@
-#include".\header\And_Or_Graph_Search.h"
+#include"./header/And_Or_Graph_Search.h"
 
 	AndOrGraphSearch::AndOrGraphSearch(Puzzle PROBLEM) {
 		problem = PROBLEM;

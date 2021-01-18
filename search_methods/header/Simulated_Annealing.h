@@ -23,10 +23,10 @@ private:
 	double tempeture = 100;
 	double decay = 0.999;
 
-	inline inline Puzzle RandomValue(Puzzle current);
+	inline Puzzle RandomValue(Puzzle current);
 
-	inline inline bool RandomProbability(double delE, double T);
+	inline bool RandomProbability(double delE, double T);
 
-	inline inline Puzzle Main();
+	inline Puzzle Main();
 };
 #endif

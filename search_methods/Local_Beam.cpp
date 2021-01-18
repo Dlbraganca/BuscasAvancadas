@@ -1,4 +1,4 @@
-#include".\header\Local_Beam.h"
+#include"./header/Local_Beam.h"
 
 	LocalBeam::LocalBeam() {}
 	LocalBeam::LocalBeam(Puzzle Problem) {

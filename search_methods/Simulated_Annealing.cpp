@@ -1,5 +1,5 @@
 //#include "8puzzle.h"
-#include".\header\Simulated_Annealing.h"
+#include"./header/Simulated_Annealing.h"
 
 	SimulatedAnnealing::SimulatedAnnealing(Puzzle PROBLEM) {
 		problem = PROBLEM;
