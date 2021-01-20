@@ -94,7 +94,6 @@
 			mutatedChild = problem;
 			mutatedChild.perform_movements(mutatedMoviments);
 		}
-		std::cout << "MUTATED\n";
 		return mutatedChild;
 	}
 
@@ -113,11 +112,9 @@
 				std::vector<int> movements = newPerson.get_possibleMovements();
 				std::uniform_int_distribution <int> distribution(0, movements.size() - 1);
 				newPerson = Puzzle(newPerson, movements[distribution(generator)]);
-				std::cout << "movimento anexado\n";
 			}
 			population.push_back(newPerson); //insere essa sequencia de movimenos
 		}
-		std::cout << "populacao criada\n";
 	return population;
 	}
 
@@ -146,7 +143,6 @@
 		while (!result.is_objetive() && (tnow-tbegin) < searchTime)
 		{
 			population = CreatePopulation(deepth,populationSize);
-			std::cout << "populacao criada!\n";
 			result = GeneticSearch(population, deepth, maxTime, pMutate, pCrossover);
 			population.clear();
 			std::cout << "-------MELHOR RESULTADO-----------\n";
@@ -172,6 +168,7 @@
 		tbegin = clock(); // get  begin time
 		unsigned int populationSize = 20;
 		int bestHeuristic = 1000;
+		int bestIndividual = 0;
 
 		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 		std::mt19937 generator(seed);
@@ -252,7 +249,6 @@
 
 				if (randNum <= pMutate) //probabilidade de 10% de ocorrer uma muta��o
 				{
-					std::cout << "is goingo to mutate\n";
 					child = Mutate(child);
 				}
 				if (child.get_heuristic() > fitness) // salva o melhor estado gerado
@@ -269,8 +265,7 @@
 				newPopulation.push_back(child); //caso nao adiciona esse novo filho na populacao gerada
 			}
 			bestHeuristic = population[0].get_heuristic();
-			size_t bestIndividual = 0;
-			for (size_t i = 1; i < population.size(); i++)
+			for (size_t i = 0; i < population.size(); i++)
 			{
 				if (population[i].get_heuristic() > bestHeuristic)
 				{
@@ -279,7 +274,7 @@
 			}
 			int worseHeuristic = newPopulation[0].get_heuristic();
 			size_t worseIndividual = 0;
-			for (size_t i = 1; i < newPopulation.size(); i++)
+			for (size_t i = 0; i < newPopulation.size(); i++)
 			{
 				if (newPopulation[i].get_heuristic() < worseHeuristic)
 				{
@@ -290,7 +285,7 @@
 			//selectedPopulation.push_back(population[bestIndividual]);
 			population = newPopulation;
 			newPopulation.clear();
-			for (size_t i = 0; i < population.size(); i++)
+			for (int i = 0; i < population.size(); i++)
 			{
 				if (population[i].get_heuristic() > bestHeuristic)
 				{
@@ -298,11 +293,11 @@
 				}
 			}
 			std::cout << "-------NOVO FILHO-----------\n";
-			PrintMatrix(population[bestHeuristic].get_table());
+			PrintMatrix(population[bestIndividual].get_table());
 			std::cout << "---------MOVIMENTOS---------\n";
-			PrintVector(population[bestHeuristic].get_movements());
-			std::cout << "--------HEURISTICA--------\n" << population[bestHeuristic].get_heuristic() << std::endl;
+			PrintVector(population[bestIndividual].get_movements());
+			std::cout << "--------HEURISTICA--------\n" << population[bestIndividual].get_heuristic() << std::endl;
 		}
 
-		return population[bestHeuristic];
+		return population[bestIndividual];
 	}

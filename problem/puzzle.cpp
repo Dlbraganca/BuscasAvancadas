@@ -130,7 +130,7 @@
 		return heuristicValue;
 	}
 
-	double Puzzle::get_original_heuristic() { return double(-1* movements.size()) -1*heuristic(); }
+	double Puzzle::get_original_heuristic() { return-1* double(movements.size()) -1*heuristic(); }
 
 	std::vector<std::vector<int>> Puzzle::Action(int x) { //funcao que retorna o estado a partir de uma ação
 		int aux1, aux2;

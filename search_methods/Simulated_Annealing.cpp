@@ -62,8 +62,6 @@
 
 	Puzzle SimulatedAnnealing::Main() {
 
-
-		double T;
 		double delE;
 		int x = 1;
 		double bestHeuristic = problem.get_heuristic();
