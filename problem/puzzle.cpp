@@ -222,6 +222,7 @@
 			catch (const std::exception&)
 			{
 				table = { {11,11,11},{11,11,11},{11,11,11} };
+				heuristicValue = -1000000000;
 				break;
 			}
 		}

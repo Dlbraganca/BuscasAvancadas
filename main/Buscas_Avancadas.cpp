@@ -2,6 +2,7 @@
 #include"../search_methods/Simulated_Annealing.cpp"
 #include"../search_methods/Local_Beam.cpp"
 #include"../search_methods/Genetic_Algorithm.cpp"
+#include"../search_methods/GeneticAbel.cpp"
 
 void PrintVector(std::vector<int> x) {
     for (int i = 0; i < x.size(); i++)
@@ -46,7 +47,7 @@ int main(){
     std::cout << "ENCERRAR O PROGRAMA - 0\nBUSCA DE SUBIDA DE ENCOSTA - 1\nTÊMPERA SIMULADA - 2\nFEIXE LOCAL -3\nALGORITMO GENETICO -4\nDFS ONLINE -5\nONLINE LOCAL SEARCH -6\n";
     std::cout << "Entre com a busca desejada: \n";
     //std::cin >> searchType;
-    searchType = 4;
+    searchType = 7;
 
     //-----------SETA A BUSCA-------------------
     std::vector < std::vector<int>> initialState{ {0,1,2}, {4,5,3}, {7,8,6} };//{ {4,1,5},{6,0,8},{3,7,2} };//{ {0,2,3},{1,5,6},{4,7,8} };//{ {0,1,2}, {4,5,3}, {7,8,6} }; //{ {0,3,5}, {4,2,1}, {7,8,6} }
@@ -113,6 +114,14 @@ int main(){
     //     Answer(solution); //print out solucao
     //     break;
     // }
+     case 7:
+     {
+         std::cout << "A busca escolhida foi Algoritmo Genético Abel\n";
+         GeneticAbel search_7(problem); //chamada da busca HillClimbing 
+         solution = search_7.get_result();
+         Answer(solution); //print out solucao
+         break;
+     }
     default:
     {
         std::cout << "Tipo de busca nao encontrado!!!!\n";
