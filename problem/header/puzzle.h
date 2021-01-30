@@ -19,6 +19,8 @@ public:
 
 	inline Puzzle(Puzzle lastState, int x, std::string HEURSTICMETHOD);
 
+	inline Puzzle::Puzzle(Puzzle PROBLEM, std::vector<int> MOVEMENTS);
+
 	inline ~Puzzle();
 
 	inline std::vector<int> get_possibleMovements();
@@ -39,6 +41,8 @@ public:
 
 	inline double get_original_heuristic() ;
 
+	inline std::vector<std::vector<int>> Puzzle::try_action(int x);
+
 	inline std::vector<std::vector<int>> Action(int x);
 
 	inline int value_return(int x, int y);
@@ -56,6 +60,8 @@ public:
 	inline bool is_equal(Puzzle b);
 
 	inline void perform_movements(std::vector<int> mov);
+	
+
 
 protected:
 	std::vector<std::vector<int>> table;
@@ -73,6 +79,7 @@ private:
 	inline std::vector<int> FindElement(std::vector<std::vector<int>> table, int element);
 
 	inline std::vector<int> PossibleMovements() ;
+
 	inline double heuristic();
 
 	inline void PrintMatrix(std::vector<std::vector<int> > a);

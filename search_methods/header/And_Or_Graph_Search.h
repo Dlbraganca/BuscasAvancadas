@@ -24,6 +24,6 @@ private:
 
 	inline std::vector<int> Or_Search(Puzzle state, Puzzle problem, std::vector<int> path);
 
-	inline std::vector<std::vector<int>> And_Search(std::vector<Puzzle> states, Puzzle problem, std::vector<int> path);
+	inline std::vector <Puzzle> And_Search(std::vector<std::vector<int>> states, Puzzle problem, std::vector<int> path);
 };
 #endif

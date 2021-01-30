@@ -23,14 +23,14 @@ private:
 
 	inline void PrintMatrix(std::vector<std::vector<int> > a);
 
-	inline Puzzle Reproduce(Puzzle x, Puzzle y);
+	inline Puzzle Reproduce(Puzzle x, Puzzle y, Puzzle problem);
 
 	inline Puzzle Mutate(Puzzle x);
 
-	inline std::vector<Puzzle> CreatePopulation(int deepth, int populationSize);
+	inline std::vector<Puzzle> CreatePopulation(int maxDeepth, int populationSize);
 
 	inline Puzzle Main(Puzzle problem);
 
-	inline Puzzle GeneticSearch(std::vector<Puzzle> population, int deepth, int maxTime, double pMutate, double pCrossover);
+	inline Puzzle GeneticSearch(std::vector<Puzzle> population, double pMutate, double pCrossover, int searchTime, Puzzle problem);
 };
 #endif

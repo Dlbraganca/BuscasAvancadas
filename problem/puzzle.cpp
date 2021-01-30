@@ -1,6 +1,6 @@
 #include"./header/puzzle.h"
 
-	Puzzle::Puzzle() {};
+	Puzzle::Puzzle() {}
 
 	Puzzle::Puzzle(std::vector<std::vector<int>>TABLE, std::vector<std::vector<int>>OBJECTIVE) //contrutor da classe 
 	{
@@ -22,7 +22,7 @@
 		{
 			heuristicValue = -1 * heuristic();
 		}
-		std::cout <<"heuristica: " << heuristicValue << std::endl;
+		//std::cout <<"heuristica: " << heuristicValue << std::endl;
 
 	}
 
@@ -31,32 +31,50 @@
 		objective = lastState.get_objective();
 		movements = lastState.get_movements();
 		movements.push_back(x);
-		table = Action(x);
+		table = try_action(x);
 		if (table[0][0] != 11)
 		{
 			heuristicValue = -1 * heuristic();
 		}
 	}
 
-		Puzzle::Puzzle(Puzzle lastState, int x, std::string HEURSTICMETHOD) {
-		table = lastState.get_table();
-		objective = lastState.get_objective();
-		movements = lastState.get_movements();
-		heursticMethod = HEURSTICMETHOD;
-		movements.push_back(x);
-		table = Action(x);
-		if (table[0][0] != 11 || heursticMethod == "max")
-		{
-			heuristicValue = -1 * heuristic();
-		}
-		else
-		{
-			heuristicValue = heuristic();
-		}
+	Puzzle::Puzzle(Puzzle lastState, int x, std::string HEURSTICMETHOD) {
+	table = lastState.get_table();
+	objective = lastState.get_objective();
+	movements = lastState.get_movements();
+	heursticMethod = HEURSTICMETHOD;
+	movements.push_back(x);
+	table = Action(x);
+	if (table[0][0] != 11 || heursticMethod == "max")
+	{
+		heuristicValue = -1 * heuristic()*exp( -1*movements.size());
+	}
+	else
+	{
+		heuristicValue = heuristic();
+	}
 		
 	}
 
-	Puzzle::~Puzzle() {};
+	Puzzle::Puzzle(Puzzle PROBLEM, std::vector<int> MOVEMENTS) //contrutor da classe 
+	{
+		table = PROBLEM.get_table();
+		objective = PROBLEM.get_objective();
+		movements = MOVEMENTS;
+		perform_movements(MOVEMENTS);
+		if (table[0][0] != 11)
+		{
+			heuristicValue = -1 * heuristic() * exp(-1 * movements.size());
+		}
+		else
+		{
+			heuristicValue = -100000000000;
+		}
+		//std::cout << "heuristica: " << heuristicValue << std::endl;
+
+	}
+
+	Puzzle::~Puzzle() {}
 
 	std::vector<int> Puzzle::get_possibleMovements() {
 		if (possibleMovements.empty())
@@ -132,36 +150,48 @@
 
 	double Puzzle::get_original_heuristic() { return-1* double(movements.size()) -1*heuristic(); }
 
+	std::vector<std::vector<int>> Puzzle::try_action(int x) {
+		std::vector<std::vector<int>> table;
+		try
+		{
+			table = Action(x);
+		}
+		catch (const std::exception&)
+		{
+		}
+		return table;
+	}
+
 	std::vector<std::vector<int>> Puzzle::Action(int x) { //funcao que retorna o estado a partir de uma ação
 		int aux1, aux2;
 		std::vector<int> position;
 		std::vector<std::vector<int>> result = table;
 		position = FindElement(table, 0);
-		if (x == 1) { //esquerda	
-			aux1 = result.at(position[0]).at(position[1]);
-			aux2 = result.at(position[0]).at(position[1] - 1);
-			result.at(position[0]).at(position[1]) = aux2;
-			result.at(position[0]).at(position[1] - 1) = aux1;
-		}
-		if (x == 2) { //direita
-			aux1 = result.at(position[0]).at(position[1]);
-			aux2 = result.at(position[0]).at(position[1] + 1);
-			result.at(position[0]).at(position[1]) = aux2;
-			result.at(position[0]).at(position[1] + 1) = aux1;
-		}
-		if (x == 3) { // cima
-			aux1 = result.at(position[0]).at(position[1]);
-			aux2 = result.at(position[0] - 1).at(position[1]);
-			result.at(position[0]).at(position[1]) = aux2;
-			result.at(position[0] - 1).at(position[1]) = aux1;
-		}
-		if (x == 4) { //baixo
-			aux1 = result.at(position[0]).at(position[1]);
-			aux2 = result.at(position[0] + 1).at(position[1]);
-			result.at(position[0]).at(position[1]) = aux2;
-			result.at(position[0] + 1).at(position[1]) = aux1;
-		}
-		return result;
+			if (x == 1) { //esquerda	
+				aux1 = result.at(position[0]).at(position[1]);
+				aux2 = result.at(position[0]).at(position[1] - 1);
+				result.at(position[0]).at(position[1]) = aux2;
+				result.at(position[0]).at(position[1] - 1) = aux1;
+			}
+			if (x == 2) { //direita
+				aux1 = result.at(position[0]).at(position[1]);
+				aux2 = result.at(position[0]).at(position[1] + 1);
+				result.at(position[0]).at(position[1]) = aux2;
+				result.at(position[0]).at(position[1] + 1) = aux1;
+			}
+			if (x == 3) { // cima
+				aux1 = result.at(position[0]).at(position[1]);
+				aux2 = result.at(position[0] - 1).at(position[1]);
+				result.at(position[0]).at(position[1]) = aux2;
+				result.at(position[0] - 1).at(position[1]) = aux1;
+			}
+			if (x == 4) { //baixo
+				aux1 = result.at(position[0]).at(position[1]);
+				aux2 = result.at(position[0] + 1).at(position[1]);
+				result.at(position[0]).at(position[1]) = aux2;
+				result.at(position[0] + 1).at(position[1]) = aux1;
+			}
+			return result;
 	}
 
 	int Puzzle::value_return(int x, int y) {
@@ -221,17 +251,15 @@
 			}
 			catch (const std::exception&)
 			{
-				table = { {11,11,11},{11,11,11},{11,11,11} };
-				heuristicValue = -1000000000;
-				break;
+				
 			}
 		}
 		if (table[0][0] != 11)
 		{
 			movements = mov;
-			heuristicValue = -1 * heuristic() - 1 * movements.size();
 		}
 	}
+
 
 	std::vector<int> Puzzle::FindElement(std::vector<std::vector<int>> table, int element) { //funcao retorna a posicao de um elemnto na mesa
 		std::vector<int> position;

@@ -42,6 +42,9 @@
     <ClCompile Include="search_methods\Simulated_Annealing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="search_methods\GeneticAbel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main\header\Buscas_Avancadas.h">
@@ -69,6 +72,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="search_methods\header\Simulated_Annealing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="search_methods\header\GeneticAbel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
