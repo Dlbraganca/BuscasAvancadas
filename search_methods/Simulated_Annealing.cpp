@@ -46,11 +46,12 @@
 		std::mt19937 generator(seed);
 
 		//gerar aleatorio entre 0 e 1
-		std::uniform_real_distribution <> distribution(0, 1); // cria uma distribuicao normal com os valores min e max 
+		std::uniform_real_distribution <double> distribution(0, 1); // cria uma distribuicao normal com os valores min e max 
 		double randNum = distribution(generator); //gera o n�mero aleatorio
 
 		//gerar aleatorio entre 0 e 1 se rand <= exp pegar se nao nao pegar (se der ruim troca)
-		if (randNum < exp(delE / T))
+		double exponencial = exp(-1*delE / T);
+		if (randNum < exponencial)
 		{
 			return true;
 		}
@@ -64,21 +65,23 @@
 
 		double delE;
 		int x = 1;
-		double bestHeuristic = problem.get_heuristic();
+		double bestHeuristic = 100000;
 
 		Puzzle current = problem; //define a corrente como estado inicial
 		Puzzle next;
 		Puzzle best;
 		unsigned int count = 0;
+		bool loopControl = true;
 
+		clock_t tbegin = clock(), tend;
 		while (tempeture > 0)
 		{
 			next = RandomValue(current); //funcao que retorna um estado aleatorio
 			delE = next.get_heuristic() - current.get_heuristic();
-			if (delE > 0.0)
+ 			if (delE <= 0.0)
 			{
 				current = next;
-				if (current.get_heuristic() > bestHeuristic)
+				if (current.get_heuristic() < bestHeuristic)
 				{
 					bestHeuristic = current.get_heuristic();
 					best = current;
@@ -90,8 +93,13 @@
 			}
 			tempeture = tempeture - decay;
 			count++;
-			std::cout << "\nheuristica: " << current.get_heuristic() << "-----TEMPERATURA: " << tempeture;
-			std::cout << "\n NUMERO DE ESTADOS VISITADOS: " << count << std::endl;
+			/*std::cout << "\nheuristica: " << current.get_heuristic() << "-----TEMPERATURA: " << tempeture;
+			std::cout << "\n NUMERO DE ESTADOS VISITADOS: " << count << std::endl;*/
 		}
+		tend = clock() - tbegin;
+		std::cout << "\nTEMPO MEDIO DE ITERACAO: " << tend / count << std::endl;
+		std::cout << "TEMPO TOTAL DE EXECUCAO: " << tend << std::endl;
+		std::cout << "NUMERO DE ITERACOES: " << count << std::endl;
+		std::cout << "MEMORIA UTILIZADA: " << get_memory() << std::endl;
 		return best;
 	}

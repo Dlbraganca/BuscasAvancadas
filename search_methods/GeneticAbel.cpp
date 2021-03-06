@@ -37,16 +37,16 @@ Puzzle GeneticAbel::Reproduce(Puzzle x, Puzzle y, Puzzle problem) {
 	std::vector<int> x2 = x.get_movements();
 	std::vector<int> y1 = y.get_movements();
 	std::vector<int> y2 = y.get_movements();
-	int Nx = x.get_movements().size();
-	int Yx = y.get_movements().size();
-	int min = Nx;
-	int max = Yx;
+	unsigned int Nx = x.get_movements().size();
+	unsigned int Yx = y.get_movements().size();
+	unsigned int min = Nx;
+	unsigned int max = Yx;
 	if (Nx > Yx)
 	{
 		min = Yx;
 		max = Nx;
 		std::uniform_int_distribution <int> distribution(0, min); // cria uma distribuicao uniforme com os valores min e max 
-		int r = distribution(generator);
+		unsigned int r = distribution(generator);
 		for (size_t i = 0; i < r; i++)
 		{
 			newMoviments.push_back(y1[i]);
@@ -59,7 +59,7 @@ Puzzle GeneticAbel::Reproduce(Puzzle x, Puzzle y, Puzzle problem) {
 	else
 	{
 		std::uniform_int_distribution <int> distribution(0, min); // cria uma distribuicao uniforme com os valores min e max 
-		int r = distribution(generator);
+		unsigned int r = distribution(generator);
 		for (size_t i = 0; i < r; i++)
 		{
 			newMoviments.push_back(x1[i]);
@@ -85,7 +85,7 @@ Puzzle GeneticAbel::Reproduce(Puzzle x, Puzzle y, Puzzle problem) {
 		}
 	}
 	// realiza o cruzamento
-	int r = distributionInt(generator);
+	unsigned int r = distributionInt(generator);
 	for (size_t i = 0; i < r; i++)
 	{
 		newMoviments.push_back(x1[i]);
@@ -199,12 +199,12 @@ Puzzle GeneticAbel::GeneticSearch(std::vector<Puzzle> population, double pMutate
 	Puzzle child;
 	int randNum;
 	Puzzle bestChild;
-	int fitness = -10000;
+	double fitness = -10000;
 	clock_t tbegin;
 	tbegin = clock(); // get  begin time
 	unsigned int populationSize = 20;
-	int bestHeuristic = 1000;
-	int bestIndividual = 0;
+	double bestHeuristic = 1000;
+	double bestIndividual = 0;
 
 	Puzzle bestResult = population[0];
 

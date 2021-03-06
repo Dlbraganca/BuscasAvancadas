@@ -5,6 +5,8 @@
 #include<chrono>
 #include<random>
 #include"../../problem/header/puzzle.h"
+#include "windows.h"
+#include "psapi.h"
 
 class SimulatedAnnealing
 {
@@ -20,13 +22,23 @@ private:
 
 	Puzzle problem;
 	Puzzle result;
-	double tempeture = 100;
-	double decay = 0.999;
+	double tempeture = 3;
+	double decay = 0.001;
 
 	inline Puzzle RandomValue(Puzzle current);
 
 	inline bool RandomProbability(double delE, double T);
 
 	inline Puzzle Main();
+
+	SIZE_T get_memory() {
+
+		PROCESS_MEMORY_COUNTERS_EX pmc;
+
+		GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
+		SIZE_T virtualMemUsedByMe = pmc.PrivateUsage;
+		SIZE_T physMemUsedByMe = pmc.WorkingSetSize;
+		return physMemUsedByMe;
+	};
 };
 #endif

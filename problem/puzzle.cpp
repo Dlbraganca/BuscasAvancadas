@@ -45,11 +45,11 @@
 	heursticMethod = HEURSTICMETHOD;
 	movements.push_back(x);
 	table = Action(x);
-	if (table[0][0] != 11 || heursticMethod == "max")
+	if (table[0][0] != 11 && heursticMethod == "max")
 	{
 		heuristicValue = -1 * heuristic()*exp( -1*movements.size());
 	}
-	else
+	else if(heursticMethod == "min")
 	{
 		heuristicValue = heuristic();
 	}
@@ -137,8 +137,19 @@
 		return true;
     }
     
-	void Puzzle::update_heuristic(double value) {
-		heuristicValue = -1*value;
+	void Puzzle::update_heuristic() {
+		heuristicValue = -1*heuristic();
+	}
+
+	double Puzzle::update_heuristic(std::string method) {
+
+		//std::cout << "\nheuristica: " << double(1 / (heuristic() + 0.01));
+		//return double(1/ (heuristic() + 0.01));
+		if (method == "max")
+		{
+			heuristicValue = -1 * heuristic() * exp(-1 * movements.size());
+		}
+		return heuristicValue;
 	}
 
 	double Puzzle::get_heuristic() {
@@ -147,6 +158,7 @@
 		//return double(1/ (heuristic() + 0.01));
 		return heuristicValue;
 	}
+
 
 	double Puzzle::get_original_heuristic() { return-1* double(movements.size()) -1*heuristic(); }
 
@@ -357,6 +369,7 @@
 		return k;
 	}
 
+
 	void Puzzle::PrintMatrix(std::vector<std::vector<int> > a) {
 		for (unsigned int i = 0; i < a.size(); i++) {
 			for (unsigned int j = 0; j < a[i].size(); j++) {
@@ -365,4 +378,39 @@
 			std::cout << std::endl;
 		}
 		std::cout << std::endl;
+	}
+
+	std::vector<int>Puzzle::get_all_actions() {
+		return { 1,2,3,4 };
+	}
+
+	std::vector<Puzzle>Puzzle::possible_results(int x) {
+		std::vector <Puzzle> result;
+		Puzzle chidl2;
+		std::vector < std::vector<int>> newTable;
+		newTable = Action(x);
+		Puzzle child1(table, objective, movements);
+		//procura saber a acao pode ou nao ser executada
+		//caso sim retorna os dois possiveis estados ->acao executada e nao executada
+		for (size_t i = 0; i < newTable.size(); i++)
+		{
+			for (size_t k = 0; k < newTable[i].size(); k++)
+			{
+				if (newTable[i][k] != table[i][k])
+				{
+					std::vector<int> newMovements = movements;
+					newMovements.push_back(x);
+					Puzzle child2(newTable, objective, newMovements);
+					result.push_back(child1);
+					result.push_back(child2);
+					return result;
+				}
+			}
+		}
+		//caso nao -> retorna apenas acao nao executada
+		result.push_back(child1);
+	}
+
+	bool Puzzle::is_empty() {
+		return table.empty();
 	}

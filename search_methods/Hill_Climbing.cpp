@@ -44,16 +44,26 @@
 
 	Puzzle HillClimbing::Main() {
 
+		clock_t tbegin = clock(), tend;
 		Puzzle current = problem; //define a corrente como estado inicial
 		Puzzle neighbor;
+		int contador = 0;
+		bool loopControl = true;
 
-		while (true)
+		while (loopControl)
 		{
+			contador++;
 			neighbor = HighestValue(current);
 			if (neighbor.get_heuristic() < current.get_heuristic())
 			{
-				return current;
+				loopControl = false;
 			}
 			current = neighbor;
 		}
+		tend = clock() - tbegin;
+		std::cout << "\nTEMPO MEDIO DE ITERACAO: " << tend / contador << std::endl;
+		std::cout << "TEMPO TOTAL DE EXECUCAO: " << tend << std::endl;
+		std::cout << "NUMERO DE ITERACOES: " << contador << std::endl;
+		std::cout << "MEMORIA UTILIZADA: " << get_memory() << std::endl;
+		return current;
 	}

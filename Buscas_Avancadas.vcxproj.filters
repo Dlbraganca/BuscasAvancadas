@@ -45,6 +45,9 @@
     <ClCompile Include="search_methods\GeneticAbel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="search_methods\Puzzle_Tree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main\header\Buscas_Avancadas.h">
@@ -75,6 +78,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="search_methods\header\GeneticAbel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="search_methods\header\Puzzle_Tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

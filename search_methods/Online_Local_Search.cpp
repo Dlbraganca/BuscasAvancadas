@@ -1,7 +1,6 @@
 #include"./header/Online_Local_Search.h"
 
 
-	OnlineLocalSearch::OnlineLocalSearch() {}
 	OnlineLocalSearch::OnlineLocalSearch(Puzzle PROBLEM)
 	{
 		problem = PROBLEM;
@@ -11,7 +10,28 @@
 	Puzzle OnlineLocalSearch::get_result() { return answer; }
 
 	void OnlineLocalSearch::PrintVector(std::vector<int> x) {
-		for (int i = 0; i < x.size(); i++)
+		//setlocale(LC_ALL, "");
+		//for (unsigned int j = 0; j < x.size(); j++)
+		//{
+		//	if (x[j] == 1)
+		//	{
+		//		std::wcout << L'\u2190';
+		//	}
+		//	else if (x[j] == 2)
+		//	{
+		//		std::wcout << L'\u2192';
+		//	}
+		//	else if (x[j] == 3)
+		//	{
+		//		std::wcout << L'\u2191';
+		//	}
+		//	else if (x[j] == 4)
+		//	{
+		//		std::wcout << L'\u2193';
+		//	}
+		//}
+		//std::cout << std::endl;
+		for (unsigned int i = 0; i < x.size(); i++)
 		{
 			std::cout << x[i];
 		}
@@ -59,16 +79,21 @@
 	{
 
 		Puzzle current = problem;
-		int moviment = 100;
+		int moviment = 0;
+		clock_t tbegin = clock(), tend;
+		int count = 0;
 
 		while (moviment != 10 && moviment != 11)
-		{
-			std::cout << "-----------ESTADO ATUAL-------------\n";
-			PrintMatrix(current.get_table());
-			std::cout << "-----------MOVIMENTOS-------------\n";
-			PrintVector(current.get_movements());
+		{ 
+			count++;
+			//std::cout << "-----------ESTADO ATUAL-------------\n";
+			//PrintMatrix(current.get_table());
+			//std::cout << "-----------MOVIMENTOS-------------\n";
+			//PrintVector(current.get_movements());
+			//std::cout << "-----------HEURISTICA--------------\n";
+			//std::cout << H[hash_puzzle(current)] << std::endl;;
 			moviment = Agent(current);
-			if (moviment == 10)
+			if (moviment == 10 || current.is_objetive())
 			{
 				return current;
 			}
@@ -81,9 +106,24 @@
 			{
 				
 				current = Puzzle (current, moviment);
+				if (current.is_objetive())
+				{
+					tend = clock();
+					std::cout << "NUMERO DE ITERACOES: " << count << std::endl;
+					std::cout << "TEMPO TOTAL DE EXECUCAO: " << tend << std::endl;
+					//std::cout << "NUMERO DE ITERACOES: " << count << std::endl;
+					std::cout << "MEMORIA UTILIZADA: " << get_memory() << std::endl;
+					return current;
+				}
 				////std::cout << "-----------PROXIMA ACAO:" << moviment << std::endl;
 			}
 		}
+		tend = clock();
+		std::cout << "NUMERO DE ITERACOES: " << count << std::endl;
+		std::cout << "TEMPO TOTAL DE EXECUCAO: " << tend << std::endl;
+		//std::cout << "NUMERO DE ITERACOES: " << count << std::endl;
+		std::cout << "MEMORIA UTILIZADA: " << get_memory() << std::endl;
+		return current;
 	}
 	
 	int OnlineLocalSearch::OppositeMovement(int x) {
@@ -114,7 +154,6 @@
 		std::string hashKey;
 
 		hashKey = hash_puzzle(s1); //cacula a chave do valor s'
-
 		if (H.find(hashKey) == H.end()) // verifica se o valor s' ja foi indexado
 		{
 			result = s.get_heuristic(); //caso nao, retorna a heuristica daquele valor
@@ -123,7 +162,8 @@
 		else
 		{
  			//result = -1*abs(double(s.get_movements().size()) - double(s1.get_movements().size())) + H[hashKey]; //caso sim, atualiza o custo 
-			result = -1*double(s1.get_movements().size()) + H[hashKey];
+			result = -1*double(1) + H[hashKey];
+			//std::cout << s.get_movements().size()<< "s1 size: "<< s1.get_movements().size() <<"resutlado nova heuristica: " << result << std::endl;
 			return result;
 		}
 	}

@@ -6,6 +6,8 @@
 #include<math.h>
 #include<string>
 
+
+
 class Puzzle
 {
 public:
@@ -19,7 +21,7 @@ public:
 
 	inline Puzzle(Puzzle lastState, int x, std::string HEURSTICMETHOD);
 
-	inline Puzzle::Puzzle(Puzzle PROBLEM, std::vector<int> MOVEMENTS);
+	inline Puzzle(Puzzle PROBLEM, std::vector<int> MOVEMENTS);
 
 	inline ~Puzzle();
 
@@ -35,9 +37,11 @@ public:
 
 	inline bool comparaPuzzle(Puzzle outroPuzzle);
     
-	inline void update_heuristic(double value) ;
+	inline void update_heuristic() ;
 
 	inline double get_heuristic() ;
+
+	inline double update_heuristic(std::string method);
 
 	inline double get_original_heuristic() ;
 
@@ -60,8 +64,12 @@ public:
 	inline bool is_equal(Puzzle b);
 
 	inline void perform_movements(std::vector<int> mov);
-	
 
+	inline std::vector<int>Puzzle::get_all_actions();
+	
+	inline std::vector <Puzzle> possible_results(int x);
+
+	inline bool is_empty();
 
 protected:
 	std::vector<std::vector<int>> table;

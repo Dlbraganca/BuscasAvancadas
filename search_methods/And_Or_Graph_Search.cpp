@@ -2,6 +2,9 @@
 
 	AndOrGraphSearch::AndOrGraphSearch(Puzzle PROBLEM) {
 		problem = PROBLEM;
+		std::vector<Puzzle> path;
+		PuzzleTree newPlan();
+		Or_Search(problem, problem, path);
 	}
 	AndOrGraphSearch::~AndOrGraphSearch(){};
 
@@ -43,41 +46,57 @@
 		return result;
 	}
 
-	//std::vector<int> AndOrGraphSearch::Or_Search(Puzzle state, Puzzle problem, std::vector<int> path) {
-	//	
-	//	std::vector<int>actions = { 1,2,3,4 };
-	//	std::vector <Puzzle>plan;
-	//	std::vector<int> res;
-	//	if (state.is_objetive())
-	//	{
-	//		//retorna plano vazio
-	//	}
-	//	if (state.in_way(problem.get_table()))
-	//	{
-	//		//retorna falha
-	//	}
-	//	for (size_t i = 0; i < actions.size(); i++)
-	//	{
-	//		int action = actions[i];
-	//		std::vector<int> movements = state.get_movements();
-	//		movements.push_back(action);
-	//		plan = And_Search(state.Action(action), problem, movements);
-	//	}
-	//}
+	PuzzleTree AndOrGraphSearch::Or_Search(Puzzle state, Puzzle problem, std::vector<Puzzle> path) {
+		
+		std::vector<int>actions = state.get_all_actions(); //retorna todas as acoes possivels (1,2,3,4)
 
-	//std::vector <Puzzle> AndOrGraphSearch::And_Search(std::vector<std::vector<int>> states, Puzzle problem, std::vector<int> path) {
-	//	
-	//	std::vector<std::vector<int>> plan;
-	//	
-	//	for (size_t i = 0; i < states.size(); i++)
-	//	{
-	//		plan[i] = Or_Search(states[i], problem, path);
-	//		if (Falure(states[i], plan[i]))
-	//		{
-	//			plan.erase(plan.begin() + i);
-	//		}
-	//	}
-	//	return plan;
-	//}
+		if (state.is_objetive())
+		{
+			return plan;
+		}
+		for (size_t i = 0; i < path.size(); i++)
+		{
+			if (state.is_equal(path[i]))
+			{
+				return {};
+			}
+			
+		}
+		//para cada acao no problema ->
+		for (size_t i = 0; i < actions.size(); i++)
+		{
+			int action = actions[i];
+			std::vector<int> movements = state.get_movements();
+			movements.push_back(action);
+			path.push_back(state);
+			PuzzleTree newPlan = And_Search(state.possible_results(action), problem, path);
+			//plan.children.push_back(newPlan);
+			if (true)
+			{
+				Puzzle newState(state, action);
+				PuzzleTree newPlan2;
+				//newPlan.last = &plan;
+				//newPlan2.root = newState;
+				//newPlan.children.push_back(newPlan);
+			}
+		}
+		return {};
+	}
+
+	PuzzleTree AndOrGraphSearch::And_Search(std::vector<Puzzle> states, Puzzle problem, std::vector<Puzzle> path) {
+		
+		
+		for (size_t i = 0; i < states.size(); i++)
+		{
+			PuzzleTree newPlan;
+			//newPlan.root = states[i];
+			//.children.push_back(Or_Search(states[i], problem, path));
+			if (true)
+			{
+				return {};
+			}
+		}
+		return plan;
+	}
 
 	

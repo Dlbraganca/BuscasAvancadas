@@ -2,6 +2,7 @@
 
 
 	OnlineDFS::OnlineDFS() {}
+
 	OnlineDFS::OnlineDFS(Puzzle PROBLEM)
 	{
 		problem = PROBLEM;
@@ -47,6 +48,7 @@
 	std::string OnlineDFS::hash_puzzle(Puzzle a)
 	{
 		std::string answer;
+		std::vector <int> movements = a.get_movements();
 		for (size_t i = 0; i < a.get_table().size(); i++)
 		{
 			for (size_t j = 0; j < a.get_table()[i].size(); j++)
@@ -54,21 +56,28 @@
 				answer.push_back(a.get_table()[i][j]);
 			};
 		}
+		//for (size_t i = 0; i < movements.size(); i++)
+		//{
+		//	answer.push_back(movements[i]);
+		//}
 		return answer;
 	}
 
 	Puzzle OnlineDFS::Main()
 	{
-
+		clock_t tbegin = clock(), tend;
+		size_t tmax = 150000;
 		Puzzle current = problem;
 		int moviment = 100;
+		int count = 0;
 
-		while (moviment != 10 && moviment != 11)
+		while (moviment != 10 && moviment != 11 )
 		{
-			std::cout << "-----------ESTADO ATUAL-------------\n";
-			PrintMatrix(current.get_table());
-			std::cout << "-----------MOVIMENTOS-------------\n";
-			PrintVector(current.get_movements());
+			count++;
+			//std::cout << "-----------ESTADO ATUAL-------------\n";
+			//PrintMatrix(current.get_table());
+			//std::cout << "-----------MOVIMENTOS-------------\n";
+			//PrintVector(current.get_movements());
 			moviment = Agent(current);
 			if (moviment == 10)
 			{
@@ -77,6 +86,15 @@
 			else if (moviment == 11)
 			{
 				//std::cout << "RESPOSTA NAO ENCONTRADA\n";
+				return current;
+			}
+			else if (clock() - tbegin >= tmax)
+			{
+				tend = clock();
+				std::cout << "NUMERO DE ITERACOES: " << count << std::endl;
+				std::cout << "TEMPO TOTAL DE EXECUCAO: " << tend << std::endl;
+				//std::cout << "NUMERO DE ITERACOES: " << count << std::endl;
+				std::cout << "MEMORIA UTILIZADA: " << get_memory() << std::endl;
 				return current;
 			}
 			else
@@ -118,7 +136,6 @@
 
 		if (s1.is_objetive())
 		{			   //testa pra saber se � o objetivo
-
 			std::cout << "OBJETIVO\n";
 			return 10; //resultado
 		}
@@ -132,36 +149,39 @@
 
 		if (!s.get_table().empty())
 		{
-			std::cout << "S IS NOT NULL\n";
+			//std::cout << "S IS NOT NULL\n";
 			result[hash_value(s, a)] = s1;
 			unbacktracked[hash_puzzle(s1)].push_back(s);
 		}
 		if (untried[hash_puzzle(s1)].empty())
 		{
-			std::cout << "UNTRIED EMPTY\n";
+			//std::cout << "UNTRIED EMPTY\n";
 			if (unbacktracked[hash_puzzle(s1)].empty())
 			{
-				std::cout << "UNBACKTRACKED EMPTY\n";
+			//	std::cout << "UNBACKTRACKED EMPTY\n";
 				return 11; //erro
 			}
 			else
 			{
-				std::cout << "ACTION B SUCH THAT RESULTS\n";
+			//	std::cout << "ACTION B SUCH THAT RESULTS\n";
 				Puzzle unbacktrackedState = unbacktracked[hash_puzzle(s1)].back();
 				unbacktracked[hash_puzzle(s1)].pop_back();
-				std::vector<int> actionsUnbacktracked = unbacktrackedState.get_possibleMovements();
+				std::vector<int> actionsUnbacktracked = s1.get_possibleMovements();
 				while (!actionsUnbacktracked.empty())
 				{
-					std::string hashKey = hash_value(s1, actionsUnbacktracked.back());
-					if (result.find(hashKey) != result.end())
-					{
-						Puzzle lastUnback = unbacktracked[hash_puzzle(s1)].back();
-						if (result[hashKey].is_equal(lastUnback))
-						{
-							a = actionsUnbacktracked.back();
-						}
-					}
+					int movement = actionsUnbacktracked.back();
 					actionsUnbacktracked.pop_back();
+					std::string hashKey = hash_value(s1, movement);
+					//Puzzle lastUnback = unbacktracked[hash_puzzle(s1)].back();
+					if (result[hashKey].is_equal(unbacktrackedState))
+					{
+						a = movement;
+						actionsUnbacktracked.clear();
+					}
+					else if(actionsUnbacktracked.empty())
+					{
+				//		std::cout << "teste\n";
+					}
 				}
 			}
 		}

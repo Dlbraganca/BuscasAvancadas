@@ -4,11 +4,16 @@
 #include<vector>
 #include<unordered_map>
 #include"../../problem/header/puzzle.h"
+#include <iostream>
+#include <stdlib.h>  
+#include <math.h>
+#include "windows.h"
+#include "psapi.h"
 
 class OnlineLocalSearch
 {
 public:
-	inline OnlineLocalSearch();
+	inline OnlineLocalSearch() {};
 	inline OnlineLocalSearch(Puzzle PROBLEM);
 	inline ~OnlineLocalSearch();
 	inline Puzzle get_result();
@@ -44,5 +49,15 @@ private:
 	inline double LRTA_COST(Puzzle s, int a, Puzzle s1, std::unordered_map<std::string, double> H);
 
 	inline int Agent(Puzzle s1);
+
+	SIZE_T get_memory() {
+
+		PROCESS_MEMORY_COUNTERS_EX pmc;
+
+		GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
+		SIZE_T virtualMemUsedByMe = pmc.PrivateUsage;
+		SIZE_T physMemUsedByMe = pmc.WorkingSetSize;
+		return physMemUsedByMe;
+	};
 };
 #endif

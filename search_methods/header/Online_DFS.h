@@ -4,6 +4,8 @@
 #include<vector>
 #include<unordered_map>
 #include"../../problem/header/puzzle.h"
+#include "windows.h"
+#include "psapi.h"
 
 class OnlineDFS
 {
@@ -36,5 +38,15 @@ private:
 	inline int OppositeMovement(int x);
 
 	inline int Agent(Puzzle s1);
+
+	SIZE_T get_memory() {
+
+		PROCESS_MEMORY_COUNTERS_EX pmc;
+
+		GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
+		SIZE_T virtualMemUsedByMe = pmc.PrivateUsage;
+		SIZE_T physMemUsedByMe = pmc.WorkingSetSize;
+		return physMemUsedByMe;
+	};
 };
 #endif

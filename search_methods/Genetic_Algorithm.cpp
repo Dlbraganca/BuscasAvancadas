@@ -11,7 +11,7 @@
 		return result;
 	}
 	void GeneticAlgorithm::PrintVector(std::vector<int> x) {
-		for (int i = 0; i < x.size(); i++)
+		for (unsigned int i = 0; i < x.size(); i++)
 		{
 			std::cout << x[i];
 		}
@@ -59,8 +59,9 @@
 			{
 				newMoviments.push_back(y.get_movements()[i]);
 			}
-			child = Puzzle(problem.get_table(), problem.get_objective());
+			child = problem;
 			child.perform_movements(newMoviments);
+			child.update_heuristic();
 			count++;
 		}
 		if (count == 100)
@@ -93,6 +94,7 @@
 
 			mutatedChild = problem;
 			mutatedChild.perform_movements(mutatedMoviments);
+			mutatedChild.update_heuristic();
 		}
 		return mutatedChild;
 	}
@@ -127,21 +129,21 @@
 		int randNum;
 		Puzzle bestChild;
 		int fitness = -10000;
-		clock_t tbegin = clock(), tnow = 0;
-		int populationSize = 20;
-		int deepth = 5;
+		clock_t tbegin = clock(), tend = 0;
+		int populationSize = 10;
+		int deepth = 10;
 		double pMutate = 0.05;
 		double pCrossover = 0.8;
-		int searchTime = 10000000;//temo maximo da busca
-		int maxTime =1000;//tempo maximo da busca por cada profundidade
+		int searchTime = 150000;//temo maximo da busca
+		int maxTime = 150000;//tempo maximo da busca por cada profundidade
 
 		Puzzle result = problem;
 
 		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 		std::mt19937 generator(seed);
 
-		while (!result.is_objetive() && (tnow-tbegin) < searchTime)
-		{
+		//while (!result.is_objetive() && (tend - tbegin) < searchTime)
+		//{
 			population = CreatePopulation(deepth,populationSize);
 			result = GeneticSearch(population, deepth, maxTime, pMutate, pCrossover);
 			population.clear();
@@ -150,9 +152,12 @@
 			std::cout << "---------MOVIMENTOS---------\n";
 			PrintVector(result.get_movements());
 			std::cout << "--------HEURISTICA--------\n" << result.get_heuristic() << std::endl;
-			deepth++;
-			tnow = clock();
-		}
+			tend = clock() - tbegin;
+			//std::cout << "\nTEMPO MEDIO DE ITERACAO: " << tend / count << std::endl;
+			std::cout << "TEMPO TOTAL DE EXECUCAO: " << tend << std::endl;
+			//std::cout << "NUMERO DE ITERACOES: " << count << std::endl;
+			std::cout << "MEMORIA UTILIZADA: " << get_memory() << std::endl;
+		//}
 		return result;
 	}
 
@@ -164,7 +169,8 @@
 		int randNum;
 		Puzzle bestChild;
 		int fitness = -10000;
-		clock_t tbegin;
+		int count = 0;
+		clock_t tbegin, tend;
 		tbegin = clock(); // get  begin time
 		unsigned int populationSize = 20;
 		int bestHeuristic = 1000;
@@ -173,24 +179,9 @@
 		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 		std::mt19937 generator(seed);
 
-		while (int(difftime(clock(), tbegin)) < maxTime) //enquanto o tempo for maior que o estipulado
+		while (!population[bestIndividual].is_objetive() && int(difftime(clock(), tbegin)) < maxTime) //enquanto o tempo for maior que o estipulado
 		{
-		//	while (population.size() < 20)
-		//	{
-		//		for (unsigned int j = 0; j < deepth; j++)
-		//		{
-		//			std::uniform_int_distribution <int> distribution(1, 4); // cria uma distribuicao normal com os valores min e max 
-		//			newMoviments.push_back(distribution(generator));
-		//		}
-		//		Puzzle newPerson = problem;
-		//		newPerson.perform_movements(newMoviments);
-		//		if (newPerson.get_table()[0][0] != 11)
-		//		{
-		//			population.push_back(newPerson);
-		//			newPerson.~newPerson();
-		//		}
-		//		newMoviments.clear();
-		//	}
+			count++;
 			/// <abel>
 			std::vector<Puzzle> selectedPopulation;
 			for (size_t i = 0; i < population.size(); i++)
@@ -259,6 +250,7 @@
 
 				if (fitness == 0) //se chegar no estado objetivo retorna o estado
 				{
+					std::cout << "NUMERO DE ITERACOES: " << count << std::endl;
 					return bestChild;
 				}
 
@@ -292,12 +284,12 @@
 					bestHeuristic = i;
 				}
 			}
-			std::cout << "-------NOVO FILHO-----------\n";
+			/*std::cout << "-------NOVO FILHO-----------\n";
 			PrintMatrix(population[bestIndividual].get_table());
 			std::cout << "---------MOVIMENTOS---------\n";
 			PrintVector(population[bestIndividual].get_movements());
-			std::cout << "--------HEURISTICA--------\n" << population[bestIndividual].get_heuristic() << std::endl;
+			std::cout << "--------HEURISTICA--------\n" << population[bestIndividual].get_heuristic() << std::endl;*/
 		}
-
+		std::cout << "NUMERO DE ITERACOES: " << count << std::endl;
 		return population[bestIndividual];
 	}

@@ -2,7 +2,10 @@
 #ifndef And_Or_Graph_Search_H
 #define And_Or_Graph_Search_H
 #include<vector>
+#include <map>
 #include"../../problem/header/puzzle.h"
+#include"Puzzle_Tree.h"
+
 
 class AndOrGraphSearch
 {
@@ -10,9 +13,11 @@ public:
 
 	inline AndOrGraphSearch(Puzzle PROBLEM);
 	inline ~AndOrGraphSearch();
+
 protected:
 
 	Puzzle problem;
+	PuzzleTree plan;
 
 private:
 	
@@ -22,8 +27,9 @@ private:
 	
 	inline std::vector<Puzzle> Result(Puzzle state, std::vector<int> actions);
 
-	inline std::vector<int> Or_Search(Puzzle state, Puzzle problem, std::vector<int> path);
+	inline PuzzleTree Or_Search(Puzzle state, Puzzle problem, std::vector<Puzzle> path);
 
-	inline std::vector <Puzzle> And_Search(std::vector<std::vector<int>> states, Puzzle problem, std::vector<int> path);
+	inline PuzzleTree And_Search(std::vector<Puzzle> states, Puzzle problem, std::vector<Puzzle> path);
+
 };
-#endif
+#endif	
